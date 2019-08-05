@@ -35,13 +35,6 @@ help:
 	@echo "                    version"
 	@echo "		clean: Remove all build files and repositories"
 
-aws-fpga.setup.log:
-	$(MAKE) -f Makefile.amibuild setup-aws-fpga \
-		AWS_FPGA_REPO_DIR=$(BLADERUNNER_ROOT)/aws-fpga
-
-$(DEPENDENCIES): aws-fpga.setup.log
-	git submodule update --init $@
-
 dirty_check:
 	@echo "Error! this repository is dirty. Push changes before building"
 	@exit 1
@@ -96,9 +89,21 @@ share-ami: $(ISDIRTY_CHECK)
 		--attribute launchPermission --operation-type add \
 		--user-ids $(CORNELL_USER_ID) $(UW_USER_ID)
 
-
 bsg_cadenv:
 	git clone git@bitbucket.org:taylor-bsg/bsg_cadenv.git	
+
+aws-fpga.setup.log:
+	$(MAKE) -f Makefile.amibuild setup-aws-fpga \
+		AWS_FPGA_REPO_DIR=$(BLADERUNNER_ROOT)/aws-fpga
+
+# tvm must come after DEPENDENCIES
+.PHONY: tvm
+tvm:
+	mkdir build
+	git submodule update --recursive --init $@ 
+
+$(DEPENDENCIES): aws-fpga.setup.log
+	git submodule update --init $@
 
 setup: $(DEPENDENCIES) 
 	$(MAKE) -f Makefile.amibuild riscv-tools

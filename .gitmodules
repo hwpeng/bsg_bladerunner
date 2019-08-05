@@ -10,3 +10,6 @@
 [submodule "aws-fpga"]
 	path = aws-fpga
 	url = git@github.com:aws/aws-fpga.git
+[submodule "tvm"]
+	path = tvm
+	url = git@github.com:bespoke-silicon-group/tvm.git

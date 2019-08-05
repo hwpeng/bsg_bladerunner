@@ -7,6 +7,7 @@ BSG_F1_DIR            := $(BLADERUNNER_ROOT)/bsg_f1
 BSG_MANYCORE_DIR      := $(BLADERUNNER_ROOT)/bsg_manycore
 BASEJUMP_STL_DIR      := $(BLADERUNNER_ROOT)/basejump_stl
 BSG_IP_CORES_DIR      := $(BASEJUMP_STL_DIR)
+TVM_DIR               := $(BLADERUNNER_ROOT)/tvm
 
 FPGA_IMAGE_VERSION    := 3.2.0
 AWS_FPGA_VERSION      := v1.4.5

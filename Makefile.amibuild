@@ -49,6 +49,25 @@ LLVM_DIR := $(BUILD_PATH)/llvm
 llvm-install: riscv-tools
 	make -C $(BSG_MANYCORE_DIR)/software/mk/ -f Makefile.llvminstall LLVM_DIR=$(LLVM_DIR) RISCV_INSTALL_DIR=$(RISCV_INSTALL_DIR)
 
+$(TVM_DIR)/build: | $(TVM_DIR)
+	@mkdir $@
+
+$(TVM_DIR)/build/config.cmake: | $(TVM_DIR)/build
+	patch $(TVM_DIR)/cmake/config.cmake -o $@ tvm.patch
+
+$(TVM_DIR)/build/Makefile: $(TVM_DIR)/build/config.cmake
+	cd $(dir $@) ; BSG_F1_DIR=$(BSG_F1_DIR) cmake3 ..
+
+$(TVM_DIR)/build/%.so: $(TVM_DIR)/build/Makefile
+	$(MAKE) -C $(dir $<) -j8
+
+.PHONY: tvm-install
+TVM_SHARED_OBJECTS=libnnvm_compiler.so libtvm_runtime.so libtvm.so libtvm_topi.so libvta.so
+tvm-install: $(addprefix $(TVM_DIR)/build/,$(TVM_SHARED_OBJECTS))
+	cd $(TVM_DIR)/python     ; python3 setup.py install --user 
+	cd $(TVM_DIR)/topi/python; python3 setup.py install --user
+	cd $(TVM_DIR)/nnvm/python; python3 setup.py install --user
+
 # TODO: Set permissions
 XDMA_KO_FILE := /lib/modules/$(shell uname -r)/extra/xdma.ko
 xdma-install:$(XDMA_KO_FILE)

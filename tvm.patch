@@ -1,0 +1,22 @@
+diff --git a/cmake/config.cmake b/cmake/config.cmake
+index b9d54f6..0acea87 100644
+--- a/cmake/config.cmake
++++ b/cmake/config.cmake
+@@ -31,7 +31,7 @@
+ # - /path/to/cuda: use specific path to cuda toolkit
+ set(USE_CUDA OFF)
+ 
+-set(USE_CUDA_LITE OFF)
++set(USE_CUDA_LITE ON)
+ 
+ # Whether enable ROCM runtime
+ #
+@@ -94,7 +94,7 @@ set(USE_GRAPH_RUNTIME_DEBUG OFF)
+ # - ON: enable llvm with cmake's find search
+ # - OFF: disable llvm
+ # - /path/to/llvm-config: enable specific LLVM when multiple llvm-dev is available.
+-set(USE_LLVM OFF)
++set(USE_LLVM ON)
+ 
+ #---------------------------------------------
+ # Contrib libraries
