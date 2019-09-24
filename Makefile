@@ -43,6 +43,12 @@ ISDIRTY_CHECK:= $(shell git diff-index --quiet $(ORIGIN_NAME)/$(BRANCH_NAME) --i
 
 include project.mk
 
+# Enable debug features if DEBUG flag is set
+ifeq ($(DEBUG), 1)
+  export BSG_MACHINE_BRANCH_TRACE_EN = 1
+  FPGA_IMAGE_VERSION := $(FPGA_IMAGE_VERSION)d
+endif
+
 .PHONY: help clean setup setup-uw dirty_check \
 	build-dcp build-afi print-afi share-afi \
 	build-ami share-ami print-ami checkout-repos \
@@ -50,7 +56,8 @@ include project.mk
 .DEFAULT_GOAL := help
 help:
 	@echo "Usage:"
-	@echo "make {setup|setup-uw|build-ami|build-dcp|upload-afi|clean} "
+	@echo "make {setup|setup-uw|build-ami|build-dcp|upload-afi|clean} [DEBUG=1]"
+	@echo "Targets:"
 	@echo "		setup: Build all tools and perform all patching and"
 	@echo "                    updates necessary for cosimulation"
 	@echo "		setup-uw: Same as `setup` but clones bsg-cadenv"
@@ -67,6 +74,12 @@ help:
 	@echo "		print-ami: Print the AMI associated with the current"
 	@echo "                    version"
 	@echo "		clean: Remove all build files and repositories"
+	@echo ""
+	@echo "Flags:"
+	@echo "		DEBUG=1: Include tracing hardware in the FPGA image. Appends 'd'"
+	@echo "		         to the FPGA_IMAGE_VERSION. For example, if the current"
+	@echo "		         FPGA_IMAGE_VERSION is 3.4.1, setting this flag creates"
+	@echo "		         FPGA image with 3.4.1d version tag"
 
 aws-fpga.setup.log:
 	$(MAKE) -f amibuild.mk setup-aws-fpga \
