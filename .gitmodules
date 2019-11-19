@@ -6,7 +6,7 @@
 	url = git@github.com:hwpeng/bsg_manycore.git
 [submodule "basejump_stl"]
 	path = basejump_stl
-	url = git@github.com:hwpeng/basejump_stl
+	url = git@github.com:bespoke-silicon-group/basejump_stl
 [submodule "aws-fpga"]
 	path = aws-fpga
 	url = git@github.com:aws/aws-fpga.git
